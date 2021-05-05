@@ -1,2 +1,8 @@
 # CMLS-HW3-Group11
-Homework 3 CMLS - Assignment 4 - Politecnico di Milano 2020/2021
+
+## Group components:
+•	Giovanni Zanocco
+•	Elisa Castelli
+•	Antonio Rizzitiello
+•	Emanuele Intagliata
+
