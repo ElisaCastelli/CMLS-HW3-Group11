@@ -1,4 +1,4 @@
-# CMLS-HW3-Group11
+# CMLS - HW3 - Voice Harmonizer
 
 ## Group components:
 •	Giovanni Zanocco
