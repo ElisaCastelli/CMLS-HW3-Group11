@@ -1,3 +1,8 @@
+(
+thisProcess.removeOSCRecvFunc(f);
+s.killAll
+)
+
 s.boot
 
 
@@ -10,7 +15,7 @@ s.boot
 
   var chord = Select.kr(darkness, interval_struct);
 
- 
+
   second = PitchShift.ar(in:input, pitchRatio:2**(chord[1]/12), mul:gain1);
   third = PitchShift.ar(in:input, pitchRatio:2**(chord[2]/12), mul:gain2);
   fourth = PitchShift.ar(in:input, pitchRatio:2**(chord[3]/12), mul:gain3);
@@ -40,9 +45,9 @@ SynthDef(\reverb,{ arg inBus, roomSize=0.5, roomWetDry=0.5;
 )
 
 
+(
 b = Bus.audio(s);
 
-(
 z = Synth.new("delay", [\inBus, b]);
 y = Synth.before(z, "vocarmonizer", [\effectBus, b]);
 x = Synth.after(z,"reverb", [\inBus, b]);
@@ -51,74 +56,57 @@ x = Synth.after(z,"reverb", [\inBus, b]);
 
 
 NetAddr.localAddr
-NetAddr.useDoubles = true;
-
-
+// NetAddr.useDoubles = true;
 
 (
 f = {
 	arg msg;
 
 	var oscMsg = msg[0];
+	var param = msg[1];
+	var drk, dly;
 	var chordToDarkness = [0, 3, 1, 4, 2, 5];
 
 	if(msg[0] == '/chord' ,{
-		var ch,drk;
-		ch=msg[1];
-		drk = chordToDarkness[ch];
+		drk = chordToDarkness[param];
         postln(oscMsg);
 		postln("darkness:" +drk);
 		y.set("darkness", drk);
 	} );
 	if(msg[0] == '/darkness', {
-		var drk;
-		drk=msg[1];
-        postln(oscMsg);
-		postln("darkness:" +drk);
-		y.set("darkness", drk);
+		postln(oscMsg);
+		postln("darkness:" +param);
+		y.set("darkness", param);
 	} );
 	if(msg[0] == '/gain1', {
-		var gain;
-		gain=msg[1];
-        postln(oscMsg);
-		postln("gain1 :" +gain);
-		y.set("gain1", gain);
+		postln("gain1 :" +param);
+		y.set("gain1", param);
 	} );
 	if(msg[0] == '/gain2', {
-		var gain;
-		gain = msg[1];
-        postln(oscMsg);
-		postln("gain2 :" +gain);
-		y.set("gain2", gain);
+         postln(oscMsg);
+		postln("gain2 :" +param);
+		y.set("gain2", param);
 	} );
 	if(msg[0] == '/gain3', {
-		var gain;
-		gain=msg[1];
-        postln(oscMsg);
-		postln("gain3 :" +gain);
-		y.set("gain3", gain);
+         postln(oscMsg);
+		postln("gain3 :" +param);
+		y.set("gain3", param);
 	} );
 	if(msg[0] == '/dlytime', { //delaytime in seconds
-		var dly;
 		dly = 0.05+ 5*msg[1];
-        postln(oscMsg);
+		postln(oscMsg);
 		postln("delay time :" + dly);
 		z.set("delaytime", dly);
 	} );
 	if(msg[0] == '/roomsize', {
-		var room;
-		room = msg[1];
-		room = 0.19624628126621;
-        postln(oscMsg);
-		postln("room size :" + room);
-		x.set(\roomSize, room);
+         postln(oscMsg);
+		postln("room size :" + param);
+		x.set("roomSize", param);
 	} );
 	if(msg[0] == '/revamt', {
-		var wet;
-		wet=msg[1];
-        postln(oscMsg);
-		postln("rev amt :" + wet);
-		x.set("roomWetDry", wet);
+         postln(oscMsg);
+		postln("rev amt :" + param);
+		x.set("roomWetDry", param);
 	} ) ;
 };
 
