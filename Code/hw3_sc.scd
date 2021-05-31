@@ -5,13 +5,9 @@ s.boot
  SynthDef.new(\vocarmonizer, { arg effectBus, darkness=0, gain1=0.5, gain2=0.5, gain3=0.5;
   var second, third, fourth, output;
   var input = SoundIn.ar(0);
-  /* definisco la struttura intervallare degli accordi. Nell'ordine ho accordo maggiore, maggiore7 (delta), dominante (7), minore, minore7, semi-diminuito. Questo ordine rispecchia proprio la scala darkness. Quindi l'utente può selezionare un accordo o cliccando singolarmente sul suo bottone oppure variando la scala darkness (se i due non sono "allineati" sullo stesso accordo non importa). Nella scala darkness naturalmente sulla prima tacca c'è l'accordo maggiore (darkness=0), poi maggiore7 (darkness=1) etc.; spero di essere stato chiaro lul
-  */
+
   var interval_struct=[[0, 4, 7, 12],[0, 4, 7, 11],[0, 4, 7, 10],[0, 3, 7, 12],[0, 3, 7, 10],[0, 3, 6, 10]];
 
-
-  /* qui devo utilizzare questa UGen Select semplicemente per usare la darkness come indice e mettere nella variabile chord la struttura intervallare che l'utente vuole. Questo perchè se non erro l'arg è passato a tasso di controllo, e scrivendo chord=interval_struct[darkness] non funzionerebbe.
-  Bada: il parametro darkness serve a selezionare l'accordo sia che l'utente utilizzi lo slider discreto darkness, sia che utilizzi i bottoni singoli! Usiamo quello come arg per selezionare l'accordo. I numeri che arrivano come arg sono infatti gli stessi in entrambi i casi*/
   var chord = Select.kr(darkness, interval_struct);
 
   /* qui faccio il pitch shift e genero le voci */
@@ -24,7 +20,6 @@ s.boot
 )
 
 
-/* da qui in poi è abbastanza self explanatory xd. Nota che il bus interno che entra ed esce da ciascun synth è sempre lo stesso. Poi tutto va a finire sui due canali pubblici*/
 (
 SynthDef(\delay, { arg inBus, outBus=0, delaytime=0.5;
   var input, effect;
@@ -54,15 +49,10 @@ x = Synth.after(z,"reverb", [\inBus, b]);
 )
 
 
-//x.free;
-//y.free;
-//z.free;
-
 
 NetAddr.localAddr
 NetAddr.useDoubles = true;
 
-//OSCdef('test', {arg msg; y.set("gain3", msg[1]);}, "/newgain");
 
 
 (
@@ -139,5 +129,3 @@ thisProcess.addOSCRecvFunc(f);
 thisProcess.removeOSCRecvFunc(f);
 
 
-
-//y.set("darkness",0);
