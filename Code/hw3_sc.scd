@@ -10,7 +10,7 @@ s.boot
 
   var chord = Select.kr(darkness, interval_struct);
 
-  /* qui faccio il pitch shift e genero le voci */
+ 
   second = PitchShift.ar(in:input, pitchRatio:2**(chord[1]/12), mul:gain1);
   third = PitchShift.ar(in:input, pitchRatio:2**(chord[2]/12), mul:gain2);
   fourth = PitchShift.ar(in:input, pitchRatio:2**(chord[3]/12), mul:gain3);
